@@ -284,7 +284,7 @@ const LoginScreen = ({ onLogin, users, students }: { onLogin: (u: User | Student
                                 <strong>Panduan:</strong>
                                 <ol className="list-decimal ml-4 mt-1 space-y-1">
                                     <li>Buka Google Sheet "DB SENJA DIGITAL"</li>
-                                    <li>Klik Ekstensi > Apps Script</li>
+                                    <li>Klik Ekstensi &gt; Apps Script</li>
                                     <li>Paste kode script API</li>
                                     <li>Deploy sebagai Web App (Akses: Anyone)</li>
                                     <li>Copy URL-nya kesini</li>
