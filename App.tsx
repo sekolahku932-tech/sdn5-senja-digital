@@ -3,9 +3,9 @@ import Layout from './components/Layout';
 import StudentView from './components/StudentView';
 import { User, Student, Material, Submission, AppSettings, Question, FileAttachment } from './types';
 import * as db from './services/storage';
-import { GRADES, INITIAL_ADMIN } from './constants';
+import { GRADES } from './constants';
 import { 
-  Users, Trash2, Edit, Plus, Upload, Check, X, FileText, Search, Download, Paperclip, Link, Image as ImageIcon, Video, Loader2, Info, Database, Settings as SettingsIcon
+  Users, Trash2, Edit, Plus, Upload, X, FileText, Database, Settings as SettingsIcon
 } from 'lucide-react';
 
 function App() {
@@ -353,15 +353,10 @@ const StudentManager = ({ students, role, assignedClass }: StudentManagerProps) 
     const displayStudents = (role === 'teacher' && assignedClass
         ? students.filter((s) => s.grade === assignedClass)
         : students).sort((a, b) => {
-            // Sort by Grade (numerical value)
             const gradeA = parseInt(a.grade);
             const gradeB = parseInt(b.grade);
             const gradeDiff = gradeA - gradeB;
-            
-            // If grades are different, return the difference
             if (gradeDiff !== 0) return gradeDiff;
-
-            // If grades are same, sort by Name alphabetically
             return a.name.localeCompare(b.name);
         });
 
@@ -421,7 +416,7 @@ const StudentManager = ({ students, role, assignedClass }: StudentManagerProps) 
                 <h3 className="font-bold text-sm mb-2 flex items-center gap-2"><Upload className="w-4 h-4"/> Import Excel (Copy Paste)</h3>
                 <textarea 
                     className="w-full border p-2 text-xs h-24 rounded" 
-                    placeholder={`Paste data dari Excel disini.\nFormat Kolom: NISN | Nama | L/P | Kelas`}
+                    placeholder="Paste data dari Excel disini. Format: NISN | Nama | L/P | Kelas"
                     value={importText}
                     onChange={e => setImportText(e.target.value)}
                 />
@@ -530,7 +525,8 @@ const MaterialManager = ({ materials, role, assignedClass }: MaterialManagerProp
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            if (file.size > 2 * 1024 * 1024) { // Reduced to 2MB for Firestore limit safety
+            const MAX_FILE_SIZE = 2 * 1024 * 1024;
+            if (file.size > MAX_FILE_SIZE) { // Reduced to 2MB for Firestore limit safety
                 alert("Ukuran file maksimal 2MB (Limit Database). Gunakan Link untuk file besar.");
                 return;
             }
